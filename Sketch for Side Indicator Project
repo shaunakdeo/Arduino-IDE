@@ -1,0 +1,121 @@
+This is the Arduino Sketch for Side Indicator Project
+
+//* My First Project
+//* This is the side indicator for bikers or walkers 
+//* The input is connected with 5 LEDs and a switch. 
+// These are Yellow Lights declaration
+int switchpin1 = 8;
+int yellowpin13 = 13;
+int yellowpin12 = 12;
+int yellowpin11 = 11;
+int yellowpin10 = 10;
+int yellowpin9 = 9;
+int value1 = LOW;
+boolean laststate1 = LOW;
+boolean currentstate1 = LOW;
+boolean flag1 = LOW;
+
+//These are Green Lights declaration
+int switchpin2 = 7;
+int greenpin6 = 6;
+int greenpin5 = 5;
+int greenpin4 = 4;
+int greenpin3 = 3;
+int greenpin2 = 2;
+int value2 = LOW;
+boolean laststate2 = LOW;
+boolean currentstate2 = LOW;
+boolean flag2 = HIGH;
+
+void setup()
+{
+  // These are Yellow Lights declaration
+  pinMode(switchpin1, INPUT);
+  pinMode(yellowpin13, OUTPUT);
+  pinMode(yellowpin12, OUTPUT);
+  pinMode(yellowpin11, OUTPUT);
+  pinMode(yellowpin10, OUTPUT);
+  pinMode(yellowpin9, OUTPUT);
+  
+  // These are Green Lights declaration
+  pinMode(switchpin2, INPUT);
+  pinMode(greenpin6, OUTPUT); 
+  pinMode(greenpin5, OUTPUT);
+  pinMode(greenpin4, OUTPUT); 
+  pinMode(greenpin3, OUTPUT);
+  pinMode(greenpin2, OUTPUT); 
+  
+}
+
+// This debounce function is for Yellow lights
+boolean debounce1(boolean last1)
+{
+  boolean current1 = digitalRead(switchpin1);
+  if (last1 != current1)
+  {
+    delay(5);
+    current1 = digitalRead(switchpin1);
+	if ((current1 == HIGH) && (last1 == LOW))
+	{
+		flag1 = !flag1;   // this flag will capture button click and send proper value to the loop for yellow lights
+	}
+  }
+  return current1;
+}
+
+// This debounce function is for Green lights
+boolean debounce2(boolean last2)
+{
+  boolean current2 = digitalRead(switchpin2);
+  if (last2 != current2)
+  {
+    delay(5);
+    current2 = digitalRead(switchpin2);
+	if ((current2 == HIGH) && (last2 == LOW))
+	{
+		flag2 = !flag2;   // this flag will capture button click and send proper value to the loop for Green lights
+	}	
+  }
+  return current2;
+}
+
+void loop()
+{  
+	currentstate1 = debounce1(laststate1);
+	laststate1 = currentstate1;	  
+// These are Yellow Lights declaration
+	  if (flag1 == HIGH)
+	  {
+		  value1 = !value1;
+	  }
+	  else
+	  {
+		value1 = LOW;  
+	  }
+	  
+    digitalWrite(yellowpin13, value1);
+    digitalWrite(yellowpin12, value1);
+    digitalWrite(yellowpin11, value1);
+    digitalWrite(yellowpin10, value1);
+    digitalWrite(yellowpin9, value1);
+
+// These are Green Lights declaration
+	currentstate2 = debounce2(laststate2);
+	laststate2 = currentstate2;
+	
+	if ( flag2 == HIGH)
+	{
+		value2 = !value2;
+	} 
+	else
+	{
+		value2 = LOW;
+	}
+		
+    digitalWrite(greenpin6, value2);
+    digitalWrite(greenpin5, value2);
+    digitalWrite(greenpin4, value2);
+    digitalWrite(greenpin3, value2);
+    digitalWrite(greenpin2, value2);
+    delay(350);
+}
