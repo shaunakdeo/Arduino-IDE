@@ -1,0 +1,50 @@
+// Define the LED digit patters, from 0 - 9
+// Note that these patterns are for common cathode displays
+// For common anode displays, change the 1's to 0's and 0's to 1's
+// 1 = LED on, 0 = LED off, in this order:
+//                                    Arduino pin: 2,3,4,5,6,7,8
+
+
+
+byte seven_seg_digits[10][7] = {{0,1,1,1,1,1,1}, // = 0
+							    {0,0,0,1,1,0,0}, // = 1
+							    {1,0,1,1,0,1,1}, // = 2
+							    {1,0,1,1,1,1,0}, // = 3
+								{1,1,0,1,1,0,0}, // = 4
+								{1,1,1,0,1,1,0}, // = 5								
+								{1,1,1,0,1,1,1}, // = 6
+								{0,0,1,1,1,0,0}, // = 7
+								{1,1,1,1,1,1,1}, // = 8
+								{1,1,1,1,1,1,0}, // = 9								
+								};
+void setup() {
+	pinMode(2, OUTPUT);
+	pinMode(3, OUTPUT);
+	pinMode(4, OUTPUT);
+	pinMode(5, OUTPUT);
+	pinMode(6, OUTPUT);
+	pinMode(7, OUTPUT);
+	pinMode(8, OUTPUT);
+	pinMode(9, OUTPUT);
+	//digitalWrite(9, 0);  // start with the "dot" off
+}	
+
+void sevensegwrite(byte digit)
+{
+	byte pin = 2;
+	for(byte segcount = 0; segcount < 7; ++segcount)
+	{
+		digitalWrite(pin, seven_seg_digits[digit][segcount]);
+		++pin;
+	}
+}	
+
+void loop()
+{
+	for(byte count = 10; count > 0; --count)
+	{		
+		sevensegwrite(count - 1);
+		delay(1000);
+	}
+	delay(4000);
+}						
